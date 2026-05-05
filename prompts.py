@@ -1,3 +1,6 @@
+#still need to work on it but if i have two people with the same name i need to deal with this issue in the memory tool, maybe by adding a unique identifier to each person in the memory and using that identifier when checking if an email has already been sent or if a person is in the attendees or absent_people lists. This way, even if there are two people with the same name, they will be treated as separate entities in the memory.
+
+
 EXTRACTOR_PROMPT = """
 You are an expert meeting analyst for a startup.
 
