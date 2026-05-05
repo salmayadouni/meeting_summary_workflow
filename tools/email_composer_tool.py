@@ -149,7 +149,7 @@ Use short paragraphs.
 Do not use markdown.
 Do not use bullet points in the final email.
 Keep it under 150 words.
-End with: Best regards, Salma 
+End with: Best regards, Binome 
 """.strip()
 
     def write_email(

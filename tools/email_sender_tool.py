@@ -107,7 +107,7 @@ Use plain text only.
 Do not use markdown.
 Do not use bullet points.
 Keep it under 150 words.
-End with: Best regards, The Binome Team
+End with: Best regards, Binome
 
 Return only the email body.
 """.strip()
