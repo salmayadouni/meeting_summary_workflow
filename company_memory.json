@@ -1,0 +1,513 @@
+{
+  "decisions": [
+    {
+      "meeting_date": "2026-05-01",
+      "what": "The application will undergo final safety checks before promotion.",
+      "why": "To ensure the application is running fine and is safe for promotion by the marketing team."
+    },
+    {
+      "meeting_date": "2026-05-01",
+      "what": "Finalize the folder and send it to the investors.",
+      "why": "To ensure investors have all necessary information before the deadline."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-08",
+      "what": "Ensure the application runs fine and complete safety checks.",
+      "why": "To prepare for promotion by the marketing team."
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "what": "Proceed with product launch preparation.",
+      "why": "Maryem needs to finish her last part."
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "what": "Launch the product after Maryem finishes her part.",
+      "why": "Ensure all components are completed before launch."
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "what": "Launch the product on May 8.",
+      "why": "Maryem needs to complete her part before the launch."
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "what": "Launch the product on May 8",
+      "why": "To meet the planned timeline after Maryem finishes her part"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "We have limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "We have limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Cancel the Weekly Check-in scheduled for this week.",
+      "why": "We are all focused on the final deliverable."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Cancel the Weekly Check-in scheduled for this week.",
+      "why": "All are focused on the final deliverable."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Move the backend API to a microservices architecture.",
+      "why": "The monolithic structure is becoming hard to maintain."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Switch from SQLite to PostgreSQL for the production database.",
+      "why": "To handle concurrent users properly."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Move the backend API to a microservices architecture.",
+      "why": "The monolithic structure is becoming hard to maintain."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Switch from SQLite to PostgreSQL for the production database.",
+      "why": "To handle concurrent users properly."
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "what": "Move the backend API to a microservices architecture.",
+      "why": "The monolithic structure is becoming hard to maintain."
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "what": "Switch from SQLite to PostgreSQL for the production database.",
+      "why": "To handle concurrent users properly."
+    }
+  ],
+  "action_items": [
+    {
+      "meeting_date": "2026-05-01",
+      "owner": "Marwa",
+      "task": "Finish the design and send it to Maryem.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-01",
+      "owner": "Maryem",
+      "task": "Finalize the folder and send it to the investors.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-01",
+      "owner": "Marwa",
+      "task": "Finish the design and send it to Maryem.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-01",
+      "owner": "Maryem",
+      "task": "Finalize the folder using Marwa's design.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-01",
+      "owner": "Reda",
+      "task": "Check if the application is running fine and perform safety checks.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-01",
+      "owner": "Imande",
+      "task": "Check if the application is running fine and perform safety checks.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "owner": "Marwa",
+      "task": "Finish the design and send it to Maryem.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "owner": "Maryem",
+      "task": "Finalize the folder and send it to the investors.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "owner": "Reda and Imande",
+      "task": "Ensure the application is running fine and conduct last safety checks.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-08",
+      "owner": "Marwa",
+      "task": "Finish the design and send it to Maryem.",
+      "deadline": "2026-05-14"
+    },
+    {
+      "meeting_date": "2026-05-08",
+      "owner": "Maryem",
+      "task": "Finalize the folder and send it to the investors.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "owner": "Maryem",
+      "task": "Finish her last part for the product launch.",
+      "deadline": null
+    },
+    {
+      "meeting_date": "2026-04-20",
+      "owner": "maryem",
+      "task": "Finish her part of the project.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "owner": "Maryem",
+      "task": "Finish her part",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-04-29",
+      "owner": "Maryem",
+      "task": "Finish her part",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "owner": "Maryem",
+      "task": "Finish her part",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "owner": "Maryem",
+      "task": "Finish her part",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-01",
+      "owner": "Maryem",
+      "task": "Finish her part",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "owner": "Maryem",
+      "task": "Finish her part",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send her feedback.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send her feedback.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Set up the PostgreSQL schema and run the migration scripts.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Refactor the authentication module to work with the new architecture.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Write unit tests for the API endpoints.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Update the deployment pipeline on the CI/CD.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Set up the PostgreSQL schema and run the migration scripts.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Refactor the authentication module to work with the new architecture.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Write unit tests for the API endpoints.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Update the deployment pipeline on the CI/CD.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "owner": "Reda",
+      "task": "Set up the PostgreSQL schema and run the migration scripts.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "owner": "Marwa",
+      "task": "Refactor the authentication module to work with the new architecture.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "owner": "Maryem",
+      "task": "Write unit tests for the API endpoints.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-05",
+      "owner": "Imane",
+      "task": "Update the deployment pipeline on the CI/CD.",
+      "deadline": "2026-05-06"
+    }
+  ],
+  "created_calendar_events": [],
+  "sent_emails": [
+    {
+      "name": "Maryem",
+      "meeting_date": "2026-05-06"
+    },
+    {
+      "name": "Maryem",
+      "meeting_date": "2026-05-01"
+    },
+    {
+      "name": "Maryem",
+      "meeting_date": "2026-05-05"
+    },
+    {
+      "name": "Maryem",
+      "meeting_date": "2026-05-04"
+    },
+    {
+      "name": "Imane",
+      "meeting_date": "2026-05-04"
+    },
+    {
+      "name": "Reda",
+      "meeting_date": "2026-05-04"
+    },
+    {
+      "name": "Marwa",
+      "meeting_date": "2026-05-04"
+    },
+    {
+      "name": "Reda",
+      "meeting_date": "2026-05-05"
+    },
+    {
+      "name": "Marwa",
+      "meeting_date": "2026-05-05"
+    },
+    {
+      "name": "Imane",
+      "meeting_date": "2026-05-05"
+    }
+  ]
+}
