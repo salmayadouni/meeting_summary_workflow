@@ -109,6 +109,36 @@
       "meeting_date": "2026-05-05",
       "what": "Switch from SQLite to PostgreSQL for the production database.",
       "why": "To handle concurrent users properly."
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "what": "Cancel the Weekly Check-in scheduled for this week.",
+      "why": "Focused on the final deliverable."
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "what": "Push the final version to GitHub.",
+      "why": "Final review was completed, and supervisor feedback was integrated."
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "what": "Push the final version of the workflow to GitHub.",
+      "why": "To finalize the demo and receive feedback."
     }
   ],
   "action_items": [
@@ -465,6 +495,90 @@
       "owner": "Imane",
       "task": "Update the deployment pipeline on the CI/CD.",
       "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure",
+      "deadline": "2026-05-10"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-10"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-06",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Me",
+      "task": "Push the final version to GitHub.",
+      "deadline": "2026-05-10"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Me",
+      "task": "Push final version to GitHub.",
+      "deadline": "2026-05-15"
     }
   ],
   "created_calendar_events": [],
@@ -508,6 +622,21 @@
     {
       "name": "Imane",
       "meeting_date": "2026-05-05"
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Binome team Conference",
+      "meeting_date": "2026-05-04"
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Binome team meeting",
+      "meeting_date": "2026-05-06"
+    },
+    {
+      "name": "Craig",
+      "meeting_title": "Workflow Demo",
+      "meeting_date": "2026-05-07"
     }
   ]
 }

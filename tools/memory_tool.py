@@ -102,18 +102,42 @@ class MemoryTool(Tool):
             })
 
         return new_events, skipped_events
-    def email_already_sent(self, memory: dict, name: str, meeting_date: str) -> bool:
-        expected = self.normalise(name)
+    def email_already_sent(
+        self,
+        memory: dict,
+        name: str,
+        meeting_title: str,
+        meeting_date: str,
+    ) -> bool:
+        """
+        Returns True only if an email was already sent to `name` for the
+        specific meeting identified by (meeting_title + meeting_date).
+
+        This allows multiple meetings on the same day (e.g. "Sprint Planning"
+        and "Design Review" both on May 4) to each send their own emails,
+        while still preventing duplicates if the same meeting is processed
+        more than once.
+        """
+        expected_name  = self.normalise(name)
+        expected_title = self.normalise(meeting_title)
         return any(
-            self.normalise(e.get("name")) == expected
+            self.normalise(e.get("name")) == expected_name
+            and self.normalise(e.get("meeting_title", "")) == expected_title
             and e.get("meeting_date") == meeting_date
             for e in memory.get("sent_emails", [])
         )
 
-    def record_sent_email(self, memory: dict, name: str, meeting_date: str) -> None:
+    def record_sent_email(
+        self,
+        memory: dict,
+        name: str,
+        meeting_title: str,
+        meeting_date: str,
+    ) -> None:
         memory["sent_emails"].append({
-            "name":         name,
-            "meeting_date": meeting_date,
+            "name":          name,
+            "meeting_title": meeting_title,
+            "meeting_date":  meeting_date,
         })
 
     async def invoke(

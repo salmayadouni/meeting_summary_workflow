@@ -140,6 +140,8 @@ class GoogleCalendarTool(Tool):
         })
 
     def create_event(self, service, event: dict) -> dict:
+        import time
+
         start_time = self.parse_start_time(event)
         payload = self.build_event_payload(event, start_time)
 
@@ -152,6 +154,22 @@ class GoogleCalendarTool(Tool):
         meet_link = None
 
         if self.should_create_meet_link(event.get("location")):
+            # The API may return conferenceData with status "pending" immediately
+            # after insert. Re-fetch to get the fully populated conferenceData
+            # with the actual video link.
+            conf_status = (
+                result.get("conferenceData", {})
+                      .get("createRequest", {})
+                      .get("status", {})
+                      .get("statusCode", "")
+            )
+            if conf_status in ("pending", "inProgress", ""):
+                time.sleep(1)
+                result = service.events().get(
+                    calendarId=self.calendar_id,
+                    eventId=result["id"],
+                ).execute()
+
             meet_link = self.extract_video_link(result)
 
         return {

@@ -5,3 +5,4 @@ eval_report.json
 temp_pipeline_data.json
 .env
 __pycache__
+company_memory.json

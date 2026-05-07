@@ -207,13 +207,15 @@ Return only the email body.
         memory_tool: MemoryTool,
         memory: dict,
         meeting_date: str,
+        meeting_title: str = "",
+        session_id: str | None = None,
     ) -> tuple[str, dict]:
         name = email_data.get("recipient_name") or ""
         body = email_data.get("body") or ""
         recipient_type = email_data.get("recipient_type") or "attendee"
         address = contacts.get(name)
 
-        if memory_tool.email_already_sent(memory, name, meeting_date):
+        if memory_tool.email_already_sent(memory, name, meeting_title, meeting_date):
             return "skipped", {
                 "name": name,
                 "status": "already_sent",
@@ -238,7 +240,7 @@ Return only the email body.
             )
 
             if result.get("status") == "sent":
-                memory_tool.record_sent_email(memory, name, meeting_date)
+                memory_tool.record_sent_email(memory, name, meeting_title, meeting_date)
                 memory_tool.save_memory(memory)
 
                 return "sent", result
@@ -298,7 +300,11 @@ Return only the email body.
 
         pipeline_data = self.load_pipeline_data()
         extracted_data = pipeline_data.get("extracted_data") or {}
-        meeting_date = extracted_data.get("meeting_date") or ""
+        meeting_date  = extracted_data.get("meeting_date")  or ""
+        meeting_title = extracted_data.get("meeting_title") or ""
+
+        # Use conversation_id as the UI session key (for email confirmation modal)
+        session_id: str | None = getattr(invoke_context, "conversation_id", None)
 
         memory_tool = MemoryTool(name="MemoryToolRef")
         memory = memory_tool.load_memory()
@@ -322,6 +328,8 @@ Return only the email body.
                 memory_tool,
                 memory,
                 meeting_date,
+                meeting_title,
+                session_id=session_id,
             )
 
             if status == "sent":
