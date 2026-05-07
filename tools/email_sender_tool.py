@@ -83,9 +83,54 @@ class EmailSenderTool(Tool):
             body={"raw": raw_message},
         ).execute()
 
-    async def ask_user(self, prompt: str) -> str:
+    # ── Terminal fallback ────────────────────────────────────────────
+    async def ask_user_terminal(self, prompt: str) -> str:
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(None, input, prompt)
+
+    # ── UI-aware confirmation ────────────────────────────────────────
+    async def ask_confirmation(
+        self,
+        name: str,
+        recipient_type: str,
+        subject: str,
+        current_body: str,
+        session_id: str | None,
+    ) -> tuple[str, str]:
+        """
+        Returns (choice, feedback) where choice is 'Y', 'N', or 'C'.
+        - If a UI session exists, streams the email preview to the browser
+          and waits for the user to click Send / Revise / Cancel.
+        - Otherwise falls back to the terminal Y/N/C prompt.
+        """
+        session = None
+        if session_id:
+            try:
+                from ui_context import sessions
+                session = sessions.get(session_id)
+            except ImportError:
+                pass
+
+        if session is not None:
+            await session.sse_queue.put({
+                "type": "confirm_email",
+                "name": name,
+                "recipient_type": recipient_type,
+                "subject": subject,
+                "body": current_body,
+            })
+            loop = asyncio.get_running_loop()
+            future = loop.create_future()
+            session.confirm_future = future
+            response = await future
+            return response.get("answer", "C").strip().upper(), response.get("feedback", "").strip()
+        else:
+            self.print_email_preview(name, recipient_type, subject, current_body)
+            choice = (await self.ask_user_terminal("\nSend, revise, or cancel? [Y/N/C]: ")).strip().upper()
+            if choice == "N":
+                feedback = await self.ask_user_terminal("What should change? ")
+                return "N", feedback
+            return choice, ""
 
     def revise_email(
         self,
@@ -149,54 +194,27 @@ Return only the email body.
         recipient_type: str,
         subject: str,
         body: str,
+        session_id: str | None = None,
     ) -> dict:
         current_body = body
 
         while True:
-            self.print_email_preview(
-                name,
-                recipient_type,
-                subject,
-                current_body,
+            choice, feedback = await self.ask_confirmation(
+                name, recipient_type, subject, current_body, session_id
             )
-
-            choice = (
-                await self.ask_user("\nSend, revise, or cancel? [Y/N/C]: ")
-            ).strip().upper()
 
             if choice == "Y":
                 self.send_email(service, address, subject, current_body)
-
-                return {
-                    "name": name,
-                    "email": address,
-                    "type": recipient_type,
-                    "status": "sent",
-                }
+                return {"name": name, "email": address, "type": recipient_type, "status": "sent"}
 
             if choice == "N":
-                feedback = await self.ask_user("What should change? ")
-
-                if not feedback.strip():
-                    print("No feedback entered. Keeping the current version.")
+                if not feedback:
                     continue
-
-                current_body = self.revise_email(
-                    current_body,
-                    feedback,
-                    name,
-                    recipient_type,
-                )
+                current_body = self.revise_email(current_body, feedback, name, recipient_type)
                 continue
 
             if choice == "C":
-                return {
-                    "name": name,
-                    "email": address,
-                    "status": "cancelled_by_user",
-                }
-
-            print("Please type Y, N, or C.")
+                return {"name": name, "email": address, "status": "cancelled_by_user"}
 
     async def process_email(
         self,
@@ -237,6 +255,7 @@ Return only the email body.
                 recipient_type,
                 subject,
                 body,
+                session_id=session_id,
             )
 
             if result.get("status") == "sent":

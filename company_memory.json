@@ -139,6 +139,36 @@
       "meeting_date": "2026-05-07",
       "what": "Push the final version of the workflow to GitHub.",
       "why": "To finalize the demo and receive feedback."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Cancel the Weekly Check-in scheduled for this week.",
+      "why": "Focused on the final deliverable."
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "what": "Cancel the Weekly Check-in.",
+      "why": "Focused on the final deliverable."
     }
   ],
   "action_items": [
@@ -579,6 +609,102 @@
       "owner": "Me",
       "task": "Push final version to GitHub.",
       "deadline": "2026-05-15"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Salim",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Salim",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Salim",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Salim",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Salim",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Salim",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Salim",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-07",
+      "owner": "Salim",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-08"
     }
   ],
   "created_calendar_events": [],
@@ -636,6 +762,16 @@
     {
       "name": "Craig",
       "meeting_title": "Workflow Demo",
+      "meeting_date": "2026-05-07"
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Team meeting",
+      "meeting_date": "2026-05-04"
+    },
+    {
+      "name": "Salim",
+      "meeting_title": "Overview meeting",
       "meeting_date": "2026-05-07"
     }
   ]

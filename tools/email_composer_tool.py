@@ -10,7 +10,7 @@ from grafi.common.models.invoke_context import InvokeContext
 from grafi.common.models.message import Message, Messages
 from grafi.tools.tool import Tool
 
-from config import OPENAI_API_KEY, TEMP_FILE
+from config import OPENAI_API_KEY
 
 
 logger = logging.getLogger(__name__)
@@ -28,17 +28,27 @@ class EmailComposerTool(Tool):
     def normalise(self, value: str | None) -> str:
         return (value or "").strip().lower()
 
-    def load_pipeline_data(self) -> tuple[dict, str | None]:
-        if not os.path.exists(TEMP_FILE):
+    def parse_pipeline_data(self, input_data: Messages) -> tuple[dict, str | None]:
+        """
+        Parse extracted_data and next_meeting_link directly from the message
+        passed by CalendarNode — avoids reading stale data from TEMP_FILE.
+        """
+        try:
+            raw = input_data[0].content.strip()
+            if raw.startswith("```"):
+                raw = raw.split("```")[1]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+            data = json.loads(raw)
+        except (json.JSONDecodeError, IndexError):
             return {}, None
 
-        with open(TEMP_FILE, "r", encoding="utf-8") as file:
-            data = json.load(file)
-
         extracted_data = data.get("extracted_data") or {}
-
         if isinstance(extracted_data, str):
-            extracted_data = json.loads(extracted_data)
+            try:
+                extracted_data = json.loads(extracted_data)
+            except json.JSONDecodeError:
+                extracted_data = {}
 
         return extracted_data, data.get("next_meeting_link")
 
@@ -229,7 +239,7 @@ End with: Best regards, Binome
         input_data: Messages,
     ) -> AsyncGenerator[Messages, None]:
 
-        extracted_data, next_meeting_link = self.load_pipeline_data()
+        extracted_data, next_meeting_link = self.parse_pipeline_data(input_data)
 
         if not extracted_data:
             response = {
