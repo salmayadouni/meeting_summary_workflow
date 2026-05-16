@@ -1,525 +1,606 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meeting Summary Workflow</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg:#0a0c10; --surface:#111318; --border:#1e222b; --accent:#4ade9e;
-      --accent-dim:#1a4033; --muted:#3d4455; --text:#e2e8f0; --text-soft:#8892a4;
-      --warn:#f59e0b; --err:#f87171; --mono:'Space Mono',monospace;
-      --sans:'DM Sans',sans-serif; --radius:10px;
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;
-      display:flex;flex-direction:column;align-items:center;padding:0 1.5rem 4rem;overflow-x:hidden;}
-    body::before{content:'';position:fixed;inset:0;
-      background-image:radial-gradient(circle at 20% 20%,rgba(74,222,158,.04) 0%,transparent 60%),
-        radial-gradient(circle at 80% 80%,rgba(74,222,158,.03) 0%,transparent 60%);
-      pointer-events:none;z-index:0;}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Meeting Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5f4f0;--surface:#fff;--border:#e4e2db;--border2:#ccc9bf;
+  --text:#1a1916;--soft:#6b6860;--muted:#aaa89f;
+  --green:#16a35a;--green-bg:#e8f7ef;--green-dim:#b6e8ce;
+  --amber:#d97706;--amber-bg:#fef9ee;
+  --blue:#2563eb;--blue-bg:#eff6ff;
+  --red:#dc2626;--red-bg:#fee2e2;
+  --mono:'Geist Mono',monospace;--sans:'Geist',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-size:14px;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);
+  display:flex;flex-direction:column;align-items:center;}
 
-    header{position:relative;z-index:1;width:100%;max-width:860px;padding:3rem 0 2rem;
-      border-bottom:1px solid var(--border);margin-bottom:2.5rem;}
-    .tag{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
-      color:var(--accent);background:var(--accent-dim);padding:.25rem .65rem;border-radius:4px;
-      display:inline-block;margin-bottom:1rem;}
-    header h1{font-family:var(--mono);font-size:1.75rem;font-weight:700;letter-spacing:-.02em;line-height:1.2;}
-    header h1 span{color:var(--accent);}
-    header p{margin-top:.6rem;color:var(--text-soft);font-size:.95rem;font-weight:300;
-      max-width:520px;line-height:1.6;}
+/* ── Layout ── */
+.page{width:100%;max-width:760px;height:100vh;display:flex;flex-direction:column;padding:0 1rem;}
 
-    main{position:relative;z-index:1;width:100%;max-width:860px;
-      display:grid;grid-template-columns:1fr 260px;gap:1.5rem;align-items:start;}
-    @media(max-width:700px){main{grid-template-columns:1fr;}}
+/* ── Header ── */
+.header{padding:1.25rem 0 .75rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.logo{display:flex;align-items:center;gap:8px;}
+.logo-icon{width:28px;height:28px;background:var(--text);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;}
+.logo-icon svg{width:13px;height:13px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;}
+.logo-name{font-size:.82rem;font-weight:500;}
+.logo-sub{font-size:.68rem;color:var(--muted);}
+.status-pill{font-family:var(--mono);font-size:.62rem;padding:.25rem .65rem;
+  border-radius:20px;background:var(--surface);border:1px solid var(--border);
+  color:var(--muted);display:flex;align-items:center;gap:.35rem;}
+.status-pill.running{background:var(--green-bg);border-color:var(--green-dim);color:var(--green);}
+.s-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.s-dot.anim{animation:blink .9s ease infinite;}
 
-    .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-    .panel-head{padding:.75rem 1.25rem;border-bottom:1px solid var(--border);font-family:var(--mono);
-      font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);
-      display:flex;align-items:center;gap:.5rem;}
-    .panel-head .dot{width:6px;height:6px;border-radius:50%;background:var(--muted);}
-    .panel-head .dot.active{background:var(--accent);box-shadow:0 0 6px var(--accent);}
+/* ── Messages ── */
+.messages{flex:1;overflow-y:auto;padding:1.25rem 0;display:flex;flex-direction:column;gap:.75rem;}
+.messages::-webkit-scrollbar{width:4px;}
+.messages::-webkit-scrollbar-track{background:transparent;}
+.messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 
-    textarea{width:100%;min-height:260px;background:transparent;border:none;outline:none;resize:vertical;
-      color:var(--text);font-family:var(--mono);font-size:.82rem;line-height:1.7;padding:1.25rem;
-      caret-color:var(--accent);}
-    textarea::placeholder{color:var(--muted);}
+/* ── Bubbles ── */
+.bubble{display:flex;gap:.6rem;align-items:flex-start;}
+.bubble.user{flex-direction:row-reverse;}
+.avatar{width:26px;height:26px;border-radius:7px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:.6rem;
+  font-weight:600;font-family:var(--mono);}
+.avatar.user-av{background:var(--text);color:#fff;}
+.avatar.agent-av{background:var(--green-bg);color:var(--green);border:1px solid var(--green-dim);}
+.msg-body{max-width:88%;display:flex;flex-direction:column;gap:.25rem;}
+.bubble.user .msg-body{align-items:flex-end;}
 
-    .actions{padding:.85rem 1.25rem;border-top:1px solid var(--border);display:flex;
-      align-items:center;justify-content:space-between;gap:1rem;}
-    .char-count{font-family:var(--mono);font-size:.65rem;color:var(--muted);}
+.msg-text{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:.65rem .9rem;font-size:.83rem;line-height:1.65;color:var(--text);}
+.bubble.user .msg-text{background:var(--text);color:#fff;border-color:var(--text);}
+.msg-time{font-family:var(--mono);font-size:.58rem;color:var(--muted);padding:0 .3rem;}
 
-    button{cursor:pointer;border:none;outline:none;font-family:var(--sans);font-weight:600;
-      border-radius:7px;transition:all .2s ease;}
-    .btn-run{background:var(--accent);color:#0a0c10;padding:.6rem 1.4rem;font-size:.88rem;
-      display:flex;align-items:center;gap:.5rem;}
-    .btn-run:hover{filter:brightness(1.1);transform:translateY(-1px);}
-    .btn-run:active{transform:translateY(0);}
-    .btn-run:disabled{background:var(--muted);color:var(--text-soft);cursor:not-allowed;transform:none;}
-    .btn-clear{background:transparent;color:var(--text-soft);padding:.5rem .9rem;font-size:.82rem;
-      border:1px solid var(--border);}
-    .btn-clear:hover{border-color:var(--muted);color:var(--text);}
+/* ── Tool card ── */
+.tool-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:visible;
+  font-size:.78rem;
+  max-width:88%;
+  margin-left:34px;
+}
 
-    /* Pipeline */
-    .pipeline{padding:1.25rem;display:flex;flex-direction:column;gap:.3rem;}
-    .node{display:flex;align-items:center;gap:.75rem;padding:.65rem .85rem;border-radius:7px;
-      border:1px solid transparent;transition:all .3s ease;}
-    .node.running{border-color:var(--accent);background:rgba(74,222,158,.05);}
-    .node.done{border-color:var(--accent-dim);}
-    .node.error{border-color:var(--err);background:rgba(248,113,113,.05);}
-    .node-icon{width:28px;height:28px;border-radius:6px;background:var(--border);display:flex;
-      align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:all .3s;}
-    .node.running .node-icon,.node.done .node-icon{background:var(--accent-dim);}
-    .node-info{flex:1;min-width:0;}
-    .node-name{font-family:var(--mono);font-size:.68rem;color:var(--text-soft);white-space:nowrap;
-      overflow:hidden;text-overflow:ellipsis;transition:color .3s;}
-    .node.running .node-name,.node.done .node-name{color:var(--text);}
-    .node-status{font-size:.6rem;color:var(--muted);font-family:var(--mono);margin-top:1px;}
-    .node.running .node-status{color:var(--accent);}
-    .node.done .node-status{color:var(--accent);opacity:.6;}
-    .node.error .node-status{color:var(--err);}
-    .connector{width:1px;height:16px;background:var(--border);margin:0 0 0 24px;transition:background .3s;}
-    .connector.lit{background:var(--accent-dim);}
-    @keyframes spin{to{transform:rotate(360deg);}}
-    .spinner{width:12px;height:12px;border:2px solid var(--accent-dim);border-top-color:var(--accent);
-      border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+.tool-header{padding:.5rem .8rem;display:flex;align-items:center;gap:.5rem;cursor:pointer;
+  user-select:none;}
+.tool-header:hover{background:var(--bg);}
+.tool-icon{font-size:.85rem;}
+.tool-name{font-family:var(--mono);font-size:.68rem;font-weight:500;color:var(--soft);}
+.tool-status{margin-left:auto;font-family:var(--mono);font-size:.6rem;}
+.tool-status.pending{color:var(--amber);}
+.tool-status.done{color:var(--green);}
+.tool-status.error{color:var(--red);}
+.tool-body{
+  border-top:1px solid var(--border);
+  padding:.6rem .8rem;
+  display:none;
+  flex-direction:column;
+  gap:.35rem;
+}
 
-    /* Output */
-    .output-wrap{grid-column:1 / -1;display:none;}
-    .output-wrap.visible{display:block;}
-    .output-body{padding:1.5rem;font-family:var(--mono);font-size:.8rem;line-height:1.8;
-      color:var(--text);white-space:pre-wrap;word-break:break-word;}
-    .output-body.error-text{color:var(--err);}
-    .btn-copy{background:transparent;color:var(--text-soft);padding:.4rem .85rem;font-size:.75rem;
-      border:1px solid var(--border);font-family:var(--mono);letter-spacing:.05em;}
-    .btn-copy:hover{border-color:var(--accent);color:var(--accent);}
-    .output-actions{padding:.6rem 1.25rem;border-top:1px solid var(--border);display:flex;gap:.5rem;}
+.tool-body.open{
+  display:flex;
+}
 
-    /* Example pill */
-    .examples{font-size:.78rem;color:var(--text-soft);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
-    .examples span{color:var(--muted);font-size:.72rem;}
-    .example-pill{cursor:pointer;background:var(--border);color:var(--text-soft);padding:.2rem .65rem;
-      border-radius:20px;font-size:.72rem;border:none;font-family:var(--sans);transition:all .2s;}
-    .example-pill:hover{background:var(--accent-dim);color:var(--accent);}
+.tool-row{
+  display:block;
+}
+.tool-key{
+  display:block;
+  font-family:var(--mono);
+  font-size:.62rem;
+  color:var(--muted);
+  margin-bottom:.15rem;
+}
+.tool-val{
+  display:block;
+  font-family:var(--mono);
+  font-size:.65rem;
+  color:var(--text);
+  white-space:pre-wrap;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+}
+.tool-divider{height:1px;background:var(--border);margin:.2rem 0;}
+.tool-result-label{font-family:var(--mono);font-size:.6rem;color:var(--green);font-weight:500;}
 
-    /* ── Email confirmation modal ─────────────────────────────── */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);
-      z-index:100;display:flex;align-items:center;justify-content:center;padding:1.5rem;
-      opacity:0;pointer-events:none;transition:opacity .25s;}
-    .modal-backdrop.open{opacity:1;pointer-events:all;}
+/* ── Thinking ── */
+.thinking{display:flex;align-items:center;gap:.4rem;margin-left:34px;
+  font-size:.75rem;color:var(--muted);font-style:italic;padding:.1rem 0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.thinking-spin{width:11px;height:11px;border:1.5px solid var(--border2);
+  border-top-color:var(--green);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0;}
 
-    .modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;
-      width:100%;max-width:560px;max-height:90vh;overflow-y:auto;
-      transform:translateY(16px);transition:transform .25s;box-shadow:0 24px 60px rgba(0,0,0,.5);}
-    .modal-backdrop.open .modal{transform:translateY(0);}
+/* ── Final summary ── */
+.summary-card{background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;max-width:100%;margin-left:34px;}
+.summary-head{padding:.6rem .9rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;}
+.summary-label{font-family:var(--mono);font-size:.62rem;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;}
+.summary-body{padding:1rem .9rem;font-family:var(--mono);font-size:.77rem;
+  line-height:1.8;white-space:pre-wrap;word-break:break-word;}
+.copy-btn{font-family:var(--mono);font-size:.6rem;color:var(--soft);
+  background:transparent;border:1px solid var(--border);border-radius:5px;
+  padding:.2rem .55rem;cursor:pointer;}
+.copy-btn:hover{border-color:var(--green);color:var(--green);}
 
-    .modal-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);
-      display:flex;align-items:center;justify-content:space-between;}
-    .modal-title{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;
-      text-transform:uppercase;color:var(--text-soft);}
-    .modal-recipient{font-size:.88rem;font-weight:600;color:var(--text);margin-top:.2rem;}
+/* ── Input area ── */
+.input-area{padding:.75rem 0 1rem;border-top:1px solid var(--border);flex-shrink:0;}
+.input-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;transition:border-color .15s;}
+.input-box:focus-within{border-color:var(--border2);}
+textarea{width:100%;background:transparent;border:none;outline:none;resize:none;
+  color:var(--text);font-family:var(--mono);font-size:.78rem;line-height:1.7;
+  padding:.9rem 1rem;min-height:90px;max-height:220px;caret-color:var(--green);}
+textarea::placeholder{color:var(--muted);}
+.input-bar{padding:.5rem .75rem;display:flex;align-items:center;
+  justify-content:space-between;border-top:1px solid var(--border);}
+.left-btns{display:flex;gap:.4rem;align-items:center;}
+.sample-btn{font-family:var(--mono);font-size:.62rem;color:var(--soft);
+  background:transparent;border:1px solid var(--border);border-radius:6px;
+  padding:.25rem .6rem;cursor:pointer;transition:all .15s;}
+.sample-btn:hover{border-color:var(--border2);color:var(--text);}
+.clear-btn{font-family:var(--sans);font-size:.75rem;color:var(--soft);
+  background:transparent;border:1px solid var(--border);border-radius:7px;
+  padding:.35rem .7rem;cursor:pointer;}
+.clear-btn:hover{border-color:var(--border2);color:var(--text);}
+.run-btn{background:var(--text);color:#fff;font-family:var(--sans);font-size:.8rem;
+  font-weight:500;padding:.45rem 1.1rem;border-radius:8px;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:.4rem;transition:all .15s;}
+.run-btn:hover{background:#000;}
+.run-btn:disabled{background:var(--border2);color:var(--soft);cursor:not-allowed;}
+.char-count{font-family:var(--mono);font-size:.6rem;color:var(--muted);}
 
-    .email-preview{margin:1.25rem 1.5rem;background:var(--bg);border:1px solid var(--border);
-      border-radius:8px;overflow:hidden;}
-    .email-meta{padding:.75rem 1rem;border-bottom:1px solid var(--border);
-      font-size:.78rem;color:var(--text-soft);}
-    .email-meta strong{color:var(--text);}
-    .email-body{padding:1rem;font-family:var(--mono);font-size:.76rem;line-height:1.75;
-      color:var(--text);white-space:pre-wrap;max-height:220px;overflow-y:auto;}
+/* ── Tool icons map ── */
+/* handled in JS */
 
-    .modal-actions{padding:1rem 1.5rem;display:flex;flex-direction:column;gap:.75rem;
-      border-top:1px solid var(--border);}
-    .modal-btn-row{display:flex;gap:.6rem;}
-
-    .btn-send{background:var(--accent);color:#0a0c10;padding:.65rem 1.2rem;
-      font-size:.88rem;font-weight:700;flex:1;}
-    .btn-send:hover{filter:brightness(1.1);}
-    .btn-revise{background:transparent;color:var(--text);padding:.65rem 1.2rem;
-      font-size:.88rem;border:1px solid var(--border);flex:1;}
-    .btn-revise:hover{border-color:var(--accent);color:var(--accent);}
-    .btn-cancel-email{background:transparent;color:var(--err);padding:.65rem 1.2rem;
-      font-size:.88rem;border:1px solid rgba(248,113,113,.3);}
-    .btn-cancel-email:hover{background:rgba(248,113,113,.08);}
-
-    .feedback-area{display:none;flex-direction:column;gap:.5rem;}
-    .feedback-area.visible{display:flex;}
-    .feedback-area textarea{background:var(--bg);border:1px solid var(--border);border-radius:7px;
-      color:var(--text);font-family:var(--mono);font-size:.78rem;padding:.75rem;min-height:80px;
-      resize:vertical;caret-color:var(--accent);}
-    .feedback-area textarea:focus{border-color:var(--accent);outline:none;}
-    .btn-submit-feedback{background:var(--accent);color:#0a0c10;padding:.55rem 1.1rem;
-      font-size:.82rem;font-weight:700;align-self:flex-end;}
-
-    /* Node detail panel */
-    .node{cursor:default;}
-    .node.done,.node.error{cursor:pointer;}
-    .node.done:hover{background:rgba(74,222,158,.04);}
-    .node-detail{overflow:hidden;max-height:0;transition:max-height .3s ease,opacity .3s ease;
-      opacity:0;margin:0 0 0 24px;}
-    .node-detail.open{max-height:80px;opacity:1;}
-    .node-detail-inner{padding:.4rem .6rem .6rem;border-left:2px solid var(--accent-dim);
-      margin-left:13px;}
-    .node-detail-text{font-family:var(--mono);font-size:.64rem;color:var(--text-soft);
-      line-height:1.6;word-break:break-word;}
-
-    @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-    .output-wrap.visible{animation:fadeUp .4s ease;}
-  </style>
+/* ── Modal ── */
+.backdrop{position:fixed;inset:0;background:rgba(26,25,22,.5);backdrop-filter:blur(3px);
+  z-index:100;display:flex;align-items:center;justify-content:center;padding:1.5rem;
+  opacity:0;pointer-events:none;transition:opacity .2s;}
+.backdrop.open{opacity:1;pointer-events:all;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  width:100%;max-width:500px;max-height:88vh;overflow-y:auto;
+  transform:translateY(10px);transition:transform .2s;
+  box-shadow:0 20px 50px rgba(0,0,0,.1);}
+.backdrop.open .modal{transform:translateY(0);}
+.modal-head{padding:.9rem 1.1rem;border-bottom:1px solid var(--border);}
+.modal-tag{font-family:var(--mono);font-size:.6rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em;margin-bottom:.2rem;}
+.modal-who{font-size:.88rem;font-weight:500;}
+.email-box{margin:.9rem 1.1rem;background:var(--bg);border:1px solid var(--border);border-radius:9px;}
+.email-meta{padding:.6rem .9rem;border-bottom:1px solid var(--border);
+  font-family:var(--mono);font-size:.68rem;color:var(--soft);}
+.email-meta b{color:var(--text);}
+.email-text{padding:.8rem .9rem;font-family:var(--mono);font-size:.73rem;
+  line-height:1.75;white-space:pre-wrap;max-height:180px;overflow-y:auto;}
+.modal-foot{padding:.75rem 1.1rem;border-top:1px solid var(--border);
+  display:flex;flex-direction:column;gap:.6rem;}
+.modal-btns{display:flex;gap:.5rem;}
+.btn-send{flex:1;background:var(--text);color:#fff;padding:.55rem;
+  border:none;border-radius:8px;font-size:.8rem;font-weight:500;cursor:pointer;}
+.btn-send:hover{background:#000;}
+.btn-revise{flex:1;background:transparent;color:var(--text);padding:.55rem;
+  border:1px solid var(--border);border-radius:8px;font-size:.8rem;cursor:pointer;}
+.btn-revise:hover{border-color:var(--border2);}
+.btn-cancel-m{background:transparent;color:var(--red);padding:.55rem .85rem;
+  border:1px solid #fca5a5;border-radius:8px;font-size:.8rem;cursor:pointer;}
+.btn-cancel-m:hover{background:var(--red-bg);}
+.fb-area{display:none;flex-direction:column;gap:.45rem;}
+.fb-area.show{display:flex;}
+.fb-area textarea{min-height:65px;padding:.65rem;font-family:var(--mono);
+  font-size:.72rem;border:1px solid var(--border);border-radius:8px;
+  background:var(--bg);color:var(--text);resize:vertical;outline:none;}
+.fb-area textarea:focus{border-color:var(--green);}
+.btn-fb{align-self:flex-end;background:var(--text);color:#fff;padding:.4rem .9rem;
+  border:none;border-radius:7px;font-size:.75rem;font-weight:500;cursor:pointer;}
+.btn-fb:hover{background:#000;}
+</style>
 </head>
 <body>
+<div class="page">
 
-<header>
-  <div class="tag">Graphite · Agentic Workflow</div>
-  <h1>Meeting <span>Summary</span><br/>Workflow</h1>
-  <p>Paste your meeting notes below. The workflow will extract action items, update Google Calendar, email attendees, and generate a formatted summary.</p>
-</header>
-
-<main>
-  <div class="panel" id="inputPanel">
-    <div class="panel-head">
-      <div class="dot active" id="inputDot"></div>
-      meeting_notes.txt
-    </div>
-    <textarea id="notes" placeholder="Paste your meeting notes here…&#10;&#10;Example:&#10;Meeting: Product Sync — May 6&#10;Attendees: Sara, Tom, Lina&#10;…"></textarea>
-    <div class="actions">
-      <div class="examples">
-        <span>Try:</span>
-        <button class="example-pill" onclick="loadExample()">sample notes</button>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 14 14"><path d="M1 7h12M7 1l5 6-5 6"/></svg>
       </div>
-      <div style="display:flex;gap:.5rem;align-items:center;">
-        <span class="char-count" id="charCount">0 chars</span>
-        <button class="btn-clear" onclick="clearAll()">Clear</button>
-        <button class="btn-run" id="runBtn" onclick="runWorkflow()">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <polygon points="2,1 11,6 2,11" fill="currentColor"/>
-          </svg>
-          Run
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head">
-      <div class="dot" id="pipelineDot"></div>
-      pipeline
-    </div>
-    <div class="pipeline" id="pipeline"></div>
-  </div>
-
-  <div class="output-wrap panel" id="outputWrap">
-    <div class="panel-head">
-      <div class="dot active"></div>
-      summary_output
-    </div>
-    <div class="output-body" id="outputBody"></div>
-    <div class="output-actions" id="outputActions" style="display:none;">
-      <button class="btn-copy" onclick="copyOutput()">Copy to clipboard</button>
-    </div>
-  </div>
-</main>
-
-<!-- ── Email confirmation modal ──────────────────────────────── -->
-<div class="modal-backdrop" id="confirmModal">
-  <div class="modal">
-    <div class="modal-header">
       <div>
-        <div class="modal-title">Review email before sending</div>
-        <div class="modal-recipient" id="modalRecipient"></div>
+        <div class="logo-name">meeting workflow</div>
+        <div class="logo-sub">graphite · llm agent</div>
       </div>
     </div>
-
-    <div class="email-preview">
-      <div class="email-meta">
-        <strong>To:</strong> <span id="modalTo"></span><br/>
-        <strong>Subject:</strong> <span id="modalSubject"></span>
-      </div>
-      <div class="email-body" id="modalBody"></div>
+    <div class="status-pill" id="pill">
+      <div class="s-dot" id="pilldot"></div>
+      <span id="pilltext">idle</span>
     </div>
+  </div>
 
-    <div class="modal-actions">
-      <div class="modal-btn-row">
-        <button class="btn-send"  onclick="confirmEmail('Y')">Send</button>
-        <button class="btn-revise" onclick="showFeedback()">Revise</button>
-        <button class="btn-cancel-email" onclick="confirmEmail('C')">Cancel</button>
+  <!-- Messages -->
+  <div class="messages" id="messages"></div>
+
+  <!-- Input -->
+  <div class="input-area">
+    <div class="input-box">
+      <textarea id="notes" placeholder="Paste your meeting notes here…" spellcheck="false"></textarea>
+      <div class="input-bar">
+        <div class="left-btns">
+          <button class="sample-btn" id="sampleBtn" onclick="toggleSample()">load sample</button>
+          <span class="char-count" id="charCount">0 chars</span>
+        </div>
+        <div style="display:flex;gap:.4rem;">
+          <button class="clear-btn" onclick="clearAll()">Clear</button>
+          <button class="run-btn" id="runBtn" onclick="run()">
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor"><polygon points="0,0 9,4.5 0,9"/></svg>
+            Run
+          </button>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <div class="feedback-area" id="feedbackArea">
-        <textarea id="feedbackText" placeholder="What should change in this email?"></textarea>
-        <button class="btn-submit-feedback" onclick="submitFeedback()">Submit revision</button>
+</div>
+
+<!-- Email confirmation modal -->
+<div class="backdrop" id="backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-tag">Review before sending</div>
+      <div class="modal-who" id="mWho"></div>
+    </div>
+    <div class="email-box">
+      <div class="email-meta"><b>To:</b> <span id="mTo"></span> &nbsp;·&nbsp; <b>Subject:</b> <span id="mSubj"></span></div>
+      <div class="email-text" id="mBody"></div>
+    </div>
+    <div class="modal-foot">
+      <div class="modal-btns">
+        <button class="btn-send"  onclick="confirm_('Y')">Send</button>
+        <button class="btn-revise" onclick="showFb()">Revise</button>
+        <button class="btn-cancel-m" onclick="confirm_('C')">Cancel</button>
+      </div>
+      <div class="fb-area" id="fbArea">
+        <textarea id="fbText" placeholder="What should change?"></textarea>
+        <button class="btn-fb" onclick="submitFb()">Apply revision</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// ── Node definitions ─────────────────────────────────────────
-const NODES = [
-  { id:'ExtractorNode',     icon:'⬡', desc:'Parses meeting notes' },
-  { id:'MemoryNode',        icon:'◈', desc:'Enriches with context' },
-  { id:'CalendarNode',      icon:'◷', desc:'Creates calendar events' },
-  { id:'EmailComposerNode', icon:'◉', desc:'Composes emails' },
-  { id:'EmailSenderNode',   icon:'◎', desc:'Sends emails' },
-  { id:'FormatterNode',     icon:'◈', desc:'Formats final summary' },
-];
+const SAMPLE=`Meeting: Tech Sprint Planning \u2014 May 6, 2026
+Attendees: Maryem (PM), Imane (Dev)
+Absent: Reda (Backend), Marwa (Docs)
 
-let nodeState = {};
-let nodeSummaries = {};
-let currentSessionId = null;
+We agreed to split the backend pipeline into two separate services.
+We also decided to freeze any new feature requests until the current sprint closes.
 
-// ── Pipeline ─────────────────────────────────────────────────
-function renderPipeline() {
-  const container = document.getElementById('pipeline');
-  // Remember which nodes are open before re-render
-  const openNodes = new Set(
-    Array.from(container.querySelectorAll('.node-detail.open'))
-         .map(el => el.dataset.node)
-  );
-  container.innerHTML = '';
-  NODES.forEach((n, i) => {
-    const state = nodeState[n.id] || 'pending';
-    const summary = nodeSummaries[n.id] || '';
+Action items:
+- Reda: refactor the data ingestion module by May 9th
+- Marwa: update API documentation by May 10th
+- Maryem: prepare the sprint review presentation by May 8th
+- Imane: run integration tests and share report by May 9th
 
-    // Node row
-    const node = document.createElement('div');
-    node.className = `node ${state}`;
-    node.id = `node-${n.id}`;
-    let icon = n.icon;
-    if (state === 'running') icon = '<div class="spinner"></div>';
-    else if (state === 'done') icon = '✓';
-    const statusLabel = state==='running'?'running…':state==='done'?'click to expand':state==='error'?'error':n.desc;
-    node.innerHTML = `
-      <div class="node-icon">${icon}</div>
-      <div class="node-info">
-        <div class="node-name">${n.id}</div>
-        <div class="node-status">${statusLabel}</div>
-      </div>`;
-    if (state === 'done' || state === 'error') {
-      node.addEventListener('click', () => toggleNodeDetail(n.id));
-    }
-    container.appendChild(node);
+We cancelled the Architecture Review session.
+Next meeting: Sprint Review on May 12th at 10:00 on Zoom.`;
 
-    // Detail panel (shown on click)
-    const detail = document.createElement('div');
-    detail.className = 'node-detail' + (openNodes.has(n.id) ? ' open' : '');
-    detail.dataset.node = n.id;
-    detail.id = `detail-${n.id}`;
-    detail.innerHTML = `<div class="node-detail-inner">
-      <div class="node-detail-text">${summary || 'No details available yet.'}</div>
-    </div>`;
-    container.appendChild(detail);
+const TOOL_ICONS = {
+  check_email_sent:'🧠',
+  send_email_with_confirmation:'✉️',
+  record_email_sent:'📝',
+  create_calendar_event:'📅',
+  delete_calendar_event:'🗑️',
+  format_summary:'📄',
+};
 
-    if (i < NODES.length - 1) {
-      const conn = document.createElement('div');
-      conn.className = 'connector' + (state === 'done' ? ' lit' : '');
-      container.appendChild(conn);
-    }
-  });
-  document.getElementById('pipelineDot').classList.toggle('active',
-    Object.values(nodeState).includes('running'));
-}
+let sessionId = null;
+let isRunning = false;
 
-function toggleNodeDetail(nodeId) {
-  const detail = document.getElementById(`detail-${nodeId}`);
-  if (detail) detail.classList.toggle('open');
-}
-
-function resetNodes() {
-  nodeState = {};
-  nodeSummaries = {};
-  NODES.forEach(n => nodeState[n.id] = 'pending');
-  renderPipeline();
-}
-
-// ── Char counter ──────────────────────────────────────────────
+/* ── Char count ── */
 const notesEl = document.getElementById('notes');
 notesEl.addEventListener('input', () => {
   document.getElementById('charCount').textContent = notesEl.value.length + ' chars';
 });
 
-// ── Example ───────────────────────────────────────────────────
-const SAMPLE = `Meeting: Product Weekly Sync — May 6, 2026
-Attendees: Sara (CEO), Tom (Dev), Lina (Design)
-Absent: Marwa (QA)
-
-We decided to push the beta launch from May 15th to May 22nd because the onboarding flow needs more polish.
-
-Action items:
-- Tom: finish onboarding flow by May 10th
-- Lina: send final mockups to Tom by May 8th
-- Sara: reach out to 10 beta users this week
-- Marwa: review the security audit by May 12th
-
-Next meeting: Backend Call on May 10th at 14:00 on Zoom.`;
-
-function loadExample() {
+/* ── Sample toggle ── */
+function toggleSample() {
+  const btn = document.getElementById('sampleBtn');
   if (notesEl.value.trim() === SAMPLE.trim()) {
-    notesEl.value = '';
+    notesEl.value = ''; btn.textContent = 'load sample';
   } else {
-    notesEl.value = SAMPLE;
+    notesEl.value = SAMPLE; btn.textContent = 'clear sample';
   }
   notesEl.dispatchEvent(new Event('input'));
 }
 
-// ── Clear ─────────────────────────────────────────────────────
+/* ── Clear ── */
 function clearAll() {
+  if (isRunning) return;
   notesEl.value = '';
   notesEl.dispatchEvent(new Event('input'));
-  document.getElementById('outputWrap').classList.remove('visible');
-  document.getElementById('outputActions').style.display = 'none';
-  resetNodes();
-  closeModal();
+  document.getElementById('sampleBtn').textContent = 'load sample';
+  document.getElementById('messages').innerHTML = '';
+  setStatus('idle', false);
 }
 
-// ── Modal ─────────────────────────────────────────────────────
-function openModal(data) {
-  document.getElementById('modalRecipient').textContent =
-    `${data.name}  ·  ${data.recipient_type}`;
-  document.getElementById('modalTo').textContent = data.name;
-  document.getElementById('modalSubject').textContent = data.subject;
-  document.getElementById('modalBody').textContent = data.body;
-  document.getElementById('feedbackArea').classList.remove('visible');
-  document.getElementById('feedbackText').value = '';
-  document.getElementById('confirmModal').classList.add('open');
+/* ── Status pill ── */
+function setStatus(text, running) {
+  document.getElementById('pilltext').textContent = text;
+  document.getElementById('pill').className = 'status-pill' + (running ? ' running' : '');
+  document.getElementById('pilldot').className = 's-dot' + (running ? ' anim' : '');
 }
 
-function closeModal() {
-  document.getElementById('confirmModal').classList.remove('open');
+/* ── Message helpers ── */
+function addUserMsg(text) {
+  const msgs = document.getElementById('messages');
+  const preview = text.length > 200 ? text.slice(0, 200) + '…' : text;
+  msgs.innerHTML += `
+    <div class="bubble user">
+      <div class="avatar user-av">You</div>
+      <div class="msg-body">
+        <div class="msg-text" style="font-family:var(--mono);font-size:.74rem;line-height:1.7;">${preview.replace(/</g,'&lt;')}</div>
+      </div>
+    </div>`;
+  scrollDown();
 }
 
-function showFeedback() {
-  document.getElementById('feedbackArea').classList.add('visible');
-  document.getElementById('feedbackText').focus();
+function addThinking(text) {
+  const msgs = document.getElementById('messages');
+  msgs.innerHTML += `<div class="thinking"><div class="thinking-spin"></div><span>${text}</span></div>`;
+  scrollDown();
 }
 
-async function confirmEmail(answer, feedback = '') {
-  if (!currentSessionId) return;
-  closeModal();
-  try {
-    await fetch(`/confirm/${currentSessionId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ answer, feedback }),
-    });
-  } catch (e) {
-    console.error('Confirm failed:', e);
-  }
+function removeLastThinking() {
+  const msgs = document.getElementById('messages');
+  const last = msgs.querySelector('.thinking:last-child');
+  if (last) last.remove();
 }
 
-function submitFeedback() {
-  const feedback = document.getElementById('feedbackText').value.trim();
-  if (!feedback) {
-    document.getElementById('feedbackText').focus();
-    return;
-  }
-  confirmEmail('N', feedback);
+function addAgentMsg(text) {
+  const msgs = document.getElementById('messages');
+  msgs.innerHTML += `
+    <div class="bubble">
+      <div class="avatar agent-av">AI</div>
+      <div class="msg-body">
+        <div class="msg-text">${text.replace(/</g,'&lt;').replace(/\n/g,'<br/>')}</div>
+      </div>
+    </div>`;
+  scrollDown();
 }
 
-// Close modal on backdrop click
-document.getElementById('confirmModal').addEventListener('click', e => {
-  if (e.target === e.currentTarget) confirmEmail('C');
-});
+function addToolCard(tool, args, resultObj) {
+  const msgs = document.getElementById('messages');
+  const icon = TOOL_ICONS[tool] || '🔧';
+  const id = 'tc_' + Math.random().toString(36).slice(2);
+  const argsHtml = Object.entries(args).map(([k,v]) => {
+    let display = typeof v === 'object' ? JSON.stringify(v) : String(v);
+    return `<div class="tool-row"><span class="tool-key">${k}</span><span class="tool-val">${display.replace(/</g,'&lt;')}</span></div>`;
+  }).join('');
 
-// ── Run workflow ──────────────────────────────────────────────
-async function runWorkflow() {
-  const notes = notesEl.value.trim();
-  if (!notes) { notesEl.focus(); return; }
+  const resultHtml = resultObj
+    ? (() => {
+        const entries = typeof resultObj === 'object' && !Array.isArray(resultObj)
+          ? Object.entries(resultObj)
+          : [['result', JSON.stringify(resultObj)]];
+        return '<div class="tool-divider"></div>' +
+          '<div class="tool-result-label">result</div>' +
+          entries.map(([k,v]) => {
+            let d = typeof v === 'object' ? JSON.stringify(v) : String(v);
+            return `<div class="tool-row"><span class="tool-key">${k}</span><span class="tool-val">${d.replace(/</g,'&lt;')}</span></div>`;
+          }).join('');
+      })()
+    : '';
 
-  const runBtn       = document.getElementById('runBtn');
-  const outputWrap   = document.getElementById('outputWrap');
-  const outputBody   = document.getElementById('outputBody');
-  const outputActions= document.getElementById('outputActions');
+  const status = resultObj ? 'done' : 'pending';
+  const statusLabel = resultObj ? '✓ done' : '⟳ running';
 
-  runBtn.disabled = true;
-  runBtn.textContent = 'Running…';
-  outputBody.className = 'output-body';
-  outputBody.textContent = '';
-  outputWrap.classList.add('visible');
-  outputActions.style.display = 'none';
-  currentSessionId = null;
-  resetNodes();
+  msgs.innerHTML += `
+    <div class="tool-card" id="${id}">
+      <div class="tool-header" onclick="toggleTool('${id}')">
+        <span class="tool-icon">${icon}</span>
+        <span class="tool-name">${tool}</span>
+        <span class="tool-status ${status}">${statusLabel}</span>
+      </div>
+      <div class="tool-body" id="${id}_body">
+        ${argsHtml}
+        ${resultHtml}
+      </div>
+    </div>`;
+  scrollDown();
+}
 
-  try {
-    const response = await fetch('/run', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ meeting_notes: notes }),
-    });
-
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.detail || response.statusText);
+function updateToolCard(tool, result) {
+  // Find the last pending card for this tool and update it
+  const msgs = document.getElementById('messages');
+  const cards = msgs.querySelectorAll('.tool-card');
+  for (let i = cards.length - 1; i >= 0; i--) {
+    const nameEl = cards[i].querySelector('.tool-name');
+    const statusEl = cards[i].querySelector('.tool-status');
+    if (nameEl && nameEl.textContent === tool && statusEl.classList.contains('pending')) {
+      statusEl.textContent = '✓ done';
+      statusEl.className = 'tool-status done';
+      const body = cards[i].querySelector('.tool-body');
+      const div = document.createElement('div');
+      div.innerHTML = '<div class="tool-divider"></div><div class="tool-result-label">result</div>';
+      const entries = typeof result === 'object' && !Array.isArray(result)
+        ? Object.entries(result)
+        : [['result', JSON.stringify(result)]];
+      entries.forEach(([k,v]) => {
+        let d = typeof v === 'object' ? JSON.stringify(v) : String(v);
+        if (d.length > 80) d = d.slice(0,80)+'…';
+        div.innerHTML += `<div class="tool-row"><span class="tool-key">${k}</span><span class="tool-val">${d.replace(/</g,'&lt;')}</span></div>`;
+      });
+      body.appendChild(div);
+      break;
     }
+  }
+}
 
-    const reader  = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
+function toggleTool(id) {
+  document.getElementById(id+'_body').classList.toggle('open');
+}
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
+function addSummary(text) {
+  const msgs = document.getElementById('messages');
+  const id = 'sum_' + Math.random().toString(36).slice(2);
+  msgs.innerHTML += `
+    <div class="summary-card">
+      <div class="summary-head">
+        <span class="summary-label">📄 meeting summary</span>
+        <button class="copy-btn" onclick="copyText('${id}')">copy</button>
+      </div>
+      <div class="summary-body" id="${id}">${text.replace(/</g,'&lt;')}</div>
+    </div>`;
+  scrollDown();
+}
 
-      const lines = buffer.split('\n');
-      buffer = lines.pop();
-
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const raw = line.slice(6).trim();
-        if (!raw) continue;
-        let msg;
-        try { msg = JSON.parse(raw); } catch { continue; }
-
-        if (msg.type === 'session') {
-          currentSessionId = msg.session_id;
-
-        } else if (msg.type === 'confirm_email') {
-          openModal(msg);
-
-        } else if (msg.type === 'result') {
-          outputBody.textContent = msg.content;
-          outputActions.style.display = 'flex';
-          NODES.forEach(n => { if (nodeState[n.id] !== 'done') nodeState[n.id] = 'done'; });
-          renderPipeline();
-          closeModal();
-
-        } else if (msg.type === 'error') {
-          outputBody.className = 'output-body error-text';
-          outputBody.textContent = '⚠ Error: ' + msg.content;
-          NODES.forEach(n => { if (nodeState[n.id] === 'running') nodeState[n.id] = 'error'; });
-          renderPipeline();
-          closeModal();
-
-        } else if (msg.type === 'node_summary') {
-          nodeSummaries[msg.node] = msg.summary;
-          renderPipeline();
-        } else if (msg.node && msg.status) {
-          nodeState[msg.node] = msg.status;
-          renderPipeline();
-        }
+function copyText(id) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
+    document.querySelectorAll('.copy-btn').forEach(b => {
+      if (b.getAttribute('onclick') === `copyText('${id}')`) {
+        b.textContent = 'copied!';
+        setTimeout(() => b.textContent = 'copy', 2000);
       }
-    }
-  } catch (err) {
-    document.getElementById('outputBody').className = 'output-body error-text';
-    document.getElementById('outputBody').textContent = '⚠ ' + err.message;
-  } finally {
-    runBtn.disabled = false;
-    runBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polygon points="2,1 11,6 2,11" fill="currentColor"/></svg> Run`;
-  }
-}
-
-function copyOutput() {
-  const text = document.getElementById('outputBody').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.btn-copy');
-    btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy to clipboard', 2000);
+    });
   });
 }
 
-resetNodes();
+function scrollDown() {
+  const m = document.getElementById('messages');
+  m.scrollTop = m.scrollHeight;
+}
+
+/* ── Modal ── */
+function openModal(d) {
+  document.getElementById('mWho').textContent = d.name + ' · ' + d.recipient_type;
+  document.getElementById('mTo').textContent = d.name;
+  document.getElementById('mSubj').textContent = d.subject;
+  document.getElementById('mBody').textContent = d.body;
+  document.getElementById('fbArea').className = 'fb-area';
+  document.getElementById('fbText').value = '';
+  document.getElementById('backdrop').classList.add('open');
+}
+function closeModal() { document.getElementById('backdrop').classList.remove('open'); }
+function showFb() {
+  document.getElementById('fbArea').className = 'fb-area show';
+  document.getElementById('fbText').focus();
+}
+async function confirm_(answer, feedback = '') {
+  if (!sessionId) return;
+  closeModal();
+  await fetch(`/confirm/${sessionId}`, {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({answer, feedback}),
+  });
+}
+function submitFb() {
+  const fb = document.getElementById('fbText').value.trim();
+  if (!fb) { document.getElementById('fbText').focus(); return; }
+  confirm_('N', fb);
+}
+document.getElementById('backdrop').addEventListener('click', e => {
+  if (e.target === e.currentTarget) confirm_('C');
+});
+
+/* ── Run ── */
+async function run() {
+  const notes = notesEl.value.trim();
+  if (!notes || isRunning) return;
+
+  isRunning = true;
+  sessionId = null;
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div style="width:9px;height:9px;border:1.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite"></div> Running';
+
+  addUserMsg(notes);
+  setStatus('running…', true);
+  addThinking('Agent thinking…');
+
+  try {
+    const res = await fetch('/run', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({meeting_notes: notes}),
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail); }
+
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = '';
+
+    while (true) {
+      const {done, value} = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, {stream:true});
+      const lines = buf.split('\n'); buf = lines.pop();
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const raw = line.slice(6).trim(); if (!raw) continue;
+        let msg; try { msg = JSON.parse(raw); } catch { continue; }
+
+        if (msg.type === 'session') {
+          sessionId = msg.session_id;
+
+        } else if (msg.type === 'agent_thinking') {
+          removeLastThinking();
+          addAgentMsg(msg.content);
+          addThinking('Working…');
+
+        } else if (msg.type === 'tool_call') {
+          removeLastThinking();
+          addToolCard(msg.tool, msg.args, null);
+          setStatus(msg.tool.replace(/_/g,' '), true);
+          addThinking('Working…');
+
+        } else if (msg.type === 'tool_result') {
+          removeLastThinking();
+          updateToolCard(msg.tool, msg.result);
+          addThinking('Working…');
+
+        } else if (msg.type === 'confirm_email') {
+          removeLastThinking();
+          openModal(msg);
+          addThinking('Waiting for your confirmation…');
+
+        } else if (msg.type === 'result') {
+          removeLastThinking();
+          addSummary(msg.content);
+
+        } else if (msg.type === 'error') {
+          removeLastThinking();
+          addAgentMsg('⚠ Error: ' + msg.content);
+          setStatus('error', false);
+
+        } else if (msg.type === 'done') {
+          removeLastThinking();
+          setStatus('done', false);
+        }
+      }
+    }
+  } catch(e) {
+    removeLastThinking();
+    addAgentMsg('⚠ ' + e.message);
+    setStatus('error', false);
+  } finally {
+    isRunning = false;
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="9" height="9" viewBox="0 0 9 9" fill="currentColor"><polygon points="0,0 9,4.5 0,9"/></svg> Run';
+  }
+}
 </script>
 </body>
 </html>

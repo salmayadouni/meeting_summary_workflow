@@ -7,7 +7,10 @@ from grafi.workflows.impl.event_driven_workflow import EventDrivenWorkflow
 
 from config import OPENAI_API_KEY
 from prompts import EXTRACTOR_PROMPT, FORMATTER_PROMPT
-from tools import MemoryTool, GoogleCalendarTool, EmailComposerTool, EmailSenderTool
+from tools.calendar_tool_mcp import GoogleCalendarTool
+from tools import EmailComposerTool
+from tools.email_sender_tool_mcp import EmailSenderTool
+from tools import MemoryTool
 
 
 

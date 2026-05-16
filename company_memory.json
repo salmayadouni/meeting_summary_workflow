@@ -169,6 +169,11 @@
       "meeting_date": "2026-05-07",
       "what": "Cancel the Weekly Check-in.",
       "why": "Focused on the final deliverable."
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "what": "Split the workflow presentation into two parts.",
+      "why": "Limited time during the demo."
     }
   ],
   "action_items": [
@@ -705,6 +710,30 @@
       "owner": "Salim",
       "task": "Review the eval results and send feedback.",
       "deadline": "2026-05-08"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Reda",
+      "task": "Finish the pipeline documentation.",
+      "deadline": "2026-05-06"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Marwa",
+      "task": "Update the README with the final structure.",
+      "deadline": "2026-05-09"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Maryem",
+      "task": "Prepare the slides for the demo.",
+      "deadline": "2026-05-07"
+    },
+    {
+      "meeting_date": "2026-05-04",
+      "owner": "Imane",
+      "task": "Review the eval results and send feedback.",
+      "deadline": "2026-05-08"
     }
   ],
   "created_calendar_events": [],
@@ -773,6 +802,104 @@
       "name": "Salim",
       "meeting_title": "Overview meeting",
       "meeting_date": "2026-05-07"
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Binome team meeting",
+      "meeting_date": "2026-05-04"
+    },
+    {
+      "name": "Imane",
+      "meeting_title": "Binome team meeting",
+      "meeting_date": "2026-05-04"
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Tech Sprint Planning",
+      "meeting_date": "May 6, 2026",
+      "snapshot": {
+        "attendees": [
+          "Maryem (PM)",
+          "Imane (Dev)"
+        ],
+        "absent_people": [
+          "Reda (Backend)",
+          "Marwa (Docs)"
+        ],
+        "decisions": [
+          "We agreed to split the backend pipeline into two separate services.",
+          "We also decided to freeze any new feature requests until the current sprint closes."
+        ],
+        "action_items": [
+          "Reda: refactor the data ingestion module by May 9th",
+          "Marwa: update API documentation by May 10th",
+          "Maryem: prepare the sprint review presentation by May 8th",
+          "Imane: run integration tests and share report by May 9th"
+        ]
+      }
+    },
+    {
+      "name": "Reda",
+      "meeting_title": "Tech Sprint Planning",
+      "meeting_date": "May 6, 2026",
+      "snapshot": {
+        "attendees": [
+          "Maryem (PM)",
+          "Imane (Dev)"
+        ],
+        "absent_people": [
+          "Reda (Backend)",
+          "Marwa (Docs)"
+        ],
+        "decisions": [
+          "We agreed to split the backend pipeline into two separate services.",
+          "We also decided to freeze any new feature requests until the current sprint closes."
+        ],
+        "action_items": [
+          "Reda: refactor the data ingestion module by May 9th",
+          "Marwa: update API documentation by May 10th",
+          "Maryem: prepare the sprint review presentation by May 8th",
+          "Imane: run integration tests and share report by May 9th"
+        ]
+      }
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Tech Sprint Planning",
+      "meeting_date": "2023-05-01",
+      "fingerprint": "tech sprint planning maryem (pm) imane (dev) reda (backend) marwa (docs) we agreed to split the backend pipeline into two separate services. we also decided to freeze any new feature requests until the current sprint closes. reda: refactor the data ingestion module by may 9th marwa: update api documentation by may 10th maryem: prepare the sprint review presentation by may 8th imane: run integration tests and share report by may 9th",
+      "snapshot": {
+        "attendees": [
+          "Maryem (PM)",
+          "Imane (Dev)"
+        ],
+        "absent_people": [
+          "Reda (Backend)",
+          "Marwa (Docs)"
+        ],
+        "decisions": [
+          "We agreed to split the backend pipeline into two separate services.",
+          "We also decided to freeze any new feature requests until the current sprint closes."
+        ],
+        "action_items": [
+          "Reda: refactor the data ingestion module by May 9th",
+          "Marwa: update API documentation by May 10th",
+          "Maryem: prepare the sprint review presentation by May 8th",
+          "Imane: run integration tests and share report by May 9th"
+        ]
+      }
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Tech Sprint Planning",
+      "meeting_date": "May 6, 2026",
+      "fingerprint": "tech sprint planning",
+      "snapshot": {
+        "attendees": [],
+        "absent_people": [],
+        "decisions": [],
+        "action_items": []
+      }
     }
   ]
 }
