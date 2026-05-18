@@ -736,7 +736,20 @@
       "deadline": "2026-05-08"
     }
   ],
-  "created_calendar_events": [],
+  "created_calendar_events": [
+    {
+      "title": "Sprint Review",
+      "date": "2026-05-25",
+      "time": "12:00",
+      "location": "Zoom"
+    },
+    {
+      "title": "Sprint Review",
+      "date": "2026-05-25",
+      "time": "09:00",
+      "location": "Zoom"
+    }
+  ],
   "sent_emails": [
     {
       "name": "Maryem",
@@ -894,6 +907,176 @@
       "meeting_title": "Tech Sprint Planning",
       "meeting_date": "May 6, 2026",
       "fingerprint": "tech sprint planning",
+      "snapshot": {
+        "attendees": [],
+        "absent_people": [],
+        "decisions": [],
+        "action_items": []
+      }
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Team Sync",
+      "meeting_date": "May 6, 2026",
+      "fingerprint": "team sync maryem (pm) we agreed to split the backend pipeline into two separate services. we also decided to freeze any new feature requests until the current sprint closes. reda: refactor the data ingestion module by may 9th marwa: update api documentation by may 10th maryem: prepare the sprint review presentation by may 8th",
+      "snapshot": {
+        "attendees": [
+          "Maryem (PM)"
+        ],
+        "absent_people": [],
+        "decisions": [
+          "We agreed to split the backend pipeline into two separate services.",
+          "We also decided to freeze any new feature requests until the current sprint closes."
+        ],
+        "action_items": [
+          "Reda: refactor the data ingestion module by May 9th",
+          "Marwa: update API documentation by May 10th",
+          "Maryem: prepare the sprint review presentation by May 8th"
+        ]
+      }
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Project Finalization",
+      "meeting_date": "May 6, 2026",
+      "fingerprint": "project finalization maryem imane reda marwa split the backend pipeline into two separate services. freeze any new feature requests until the current sprint closes. reda: prepare the sprint review presentation by may 21th marwa: change the api documentation by may 10th maryem: refactor the data ingestion module by may 15th imane: run integration tests and share report by may 9th",
+      "snapshot": {
+        "attendees": [
+          "Maryem",
+          "Imane",
+          "Reda",
+          "Marwa"
+        ],
+        "absent_people": [],
+        "decisions": [
+          "Split the backend pipeline into two separate services.",
+          "Freeze any new feature requests until the current sprint closes."
+        ],
+        "action_items": [
+          "Reda: prepare the sprint review presentation by May 21th",
+          "Marwa: change the API documentation by May 10th",
+          "Maryem: refactor the data ingestion module by May 15th",
+          "Imane: run integration tests and share report by May 9th"
+        ]
+      }
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Launch Soon",
+      "meeting_date": "May 12, 2026",
+      "fingerprint": "launch soon maryem imane reda marwa split the backend pipeline into two separate services. freeze any new feature requests until the current sprint closes. reda: refactor the data ingestion module by may 20th maryem: prepare the api documentation by may 22th imane: run integration tests and share report by may 19th",
+      "snapshot": {
+        "attendees": [
+          "Maryem",
+          "Imane",
+          "Reda"
+        ],
+        "absent_people": [
+          "Marwa"
+        ],
+        "decisions": [
+          "Split the backend pipeline into two separate services.",
+          "Freeze any new feature requests until the current sprint closes."
+        ],
+        "action_items": [
+          "Reda: refactor the data ingestion module by May 20th",
+          "Maryem: prepare the API documentation by May 22th",
+          "Imane: run integration tests and share report by May 19th"
+        ]
+      }
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Midterm Prep",
+      "meeting_date": "May 28, 2026",
+      "fingerprint": "midterm prep maryem imane reda marwa each one of us will prepare a module and work on it, presenting and explaining it to others start working on the midterm next time reda: study investment and finish the project before 10 june marwa: explain what mcp's are by 12 june maryem: finish the project icc by 15 june imane: finish mnlp project by 24 may",
+      "snapshot": {
+        "attendees": [
+          "Maryem",
+          "Imane",
+          "Reda",
+          "Marwa"
+        ],
+        "absent_people": [],
+        "decisions": [
+          "Each one of us will prepare a module and work on it, presenting and explaining it to others",
+          "Start working on the midterm next time"
+        ],
+        "action_items": [
+          "Reda: study investment and finish the project before 10 June",
+          "Marwa: explain what MCP's are by 12 June",
+          "Maryem: finish the project icc by 15 June",
+          "Imane: finish MNLP project by 24 May"
+        ]
+      }
+    },
+    {
+      "name": "Imane",
+      "meeting_title": "Midterm Prep",
+      "meeting_date": "May 28, 2026",
+      "fingerprint": "midterm prep maryem imane reda marwa each one of us will prepare a module and work on it, presenting and explaining it to others start working on the midterm next time reda: study investment and finish the project before 10 june marwa: explain what mcp's are by 12 june maryem: finish the project icc by 15 june imane: finish mnlp project by 24 may",
+      "snapshot": {
+        "attendees": [
+          "Maryem",
+          "Imane",
+          "Reda",
+          "Marwa"
+        ],
+        "absent_people": [],
+        "decisions": [
+          "Each one of us will prepare a module and work on it, presenting and explaining it to others",
+          "Start working on the midterm next time"
+        ],
+        "action_items": [
+          "Reda: study investment and finish the project before 10 June",
+          "Marwa: explain what MCP's are by 12 June",
+          "Maryem: finish the project icc by 15 June",
+          "Imane: finish MNLP project by 24 May"
+        ]
+      }
+    },
+    {
+      "name": "Reda",
+      "meeting_title": "Midterm Prep",
+      "meeting_date": "May 28, 2026",
+      "fingerprint": "midterm prep maryem imane reda marwa each one of us will prepare a module and work on it, presenting and explaining it to others start working on the midterm next time reda: study investment and finish the project before 10 june marwa: explain what mcp's are by 12 june maryem: finish the project icc by 15 june imane: finish mnlp project by 24 may",
+      "snapshot": {
+        "attendees": [
+          "Maryem",
+          "Imane",
+          "Reda",
+          "Marwa"
+        ],
+        "absent_people": [],
+        "decisions": [
+          "Each one of us will prepare a module and work on it, presenting and explaining it to others",
+          "Start working on the midterm next time"
+        ],
+        "action_items": [
+          "Reda: study investment and finish the project before 10 June",
+          "Marwa: explain what MCP's are by 12 June",
+          "Maryem: finish the project icc by 15 June",
+          "Imane: finish MNLP project by 24 May"
+        ]
+      }
+    },
+    {
+      "name": "Maryem",
+      "meeting_title": "Project Meeting Finalization",
+      "meeting_date": "May 17, 2026",
+      "fingerprint": "project meeting finalization",
+      "snapshot": {
+        "attendees": [],
+        "absent_people": [],
+        "decisions": [],
+        "action_items": []
+      }
+    },
+    {
+      "name": "Imane",
+      "meeting_title": "Project Meeting Finalization",
+      "meeting_date": "May 17, 2026",
+      "fingerprint": "project meeting finalization",
       "snapshot": {
         "attendees": [],
         "absent_people": [],

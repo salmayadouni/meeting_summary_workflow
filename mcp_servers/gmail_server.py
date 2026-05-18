@@ -9,6 +9,8 @@ Run with:
 import base64
 import os
 import sys
+from email import encoders
+from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -27,23 +29,35 @@ def _service():
 
 
 @mcp.tool()
-async def send_email(to_address: str, subject: str, body: str) -> dict:
+async def send_email(
+    to_address: str,
+    subject: str,
+    body: str,
+    ics_content: str = "",
+) -> dict:
     """
-    Send a plain-text email via the authenticated Gmail account.
+    Send an email via Gmail. If ics_content is provided it is attached as
+    a .ics calendar invite so the recipient can add the event with one click.
 
     Args:
-        to_address: Recipient email address.
-        subject:    Email subject line.
-        body:       Plain-text email body.
-
-    Returns a dict with message_id, status, and recipient.
+        to_address:  Recipient email address.
+        subject:     Email subject line.
+        body:        Plain-text email body.
+        ics_content: Optional iCalendar (.ics) file content to attach.
     """
     service = _service()
 
-    message = MIMEMultipart()
+    message = MIMEMultipart("mixed")
     message["to"]      = to_address
     message["subject"] = subject
     message.attach(MIMEText(body, "plain"))
+
+    # Attach the .ics calendar invite if provided
+    if ics_content.strip():
+        ics_part = MIMEText(ics_content, "calendar", "utf-8")
+        ics_part.add_header("Content-Disposition", 'attachment; filename="invite.ics"')
+        ics_part.replace_header("Content-Type", 'text/calendar; method=REQUEST; charset="utf-8"')
+        message.attach(ics_part)
 
     raw    = base64.urlsafe_b64encode(message.as_bytes()).decode()
     result = service.users().messages().send(
@@ -52,9 +66,10 @@ async def send_email(to_address: str, subject: str, body: str) -> dict:
     ).execute()
 
     return {
-        "message_id": result.get("id"),
-        "status":     "sent",
-        "to":         to_address,
+        "message_id":    result.get("id"),
+        "status":        "sent",
+        "to":            to_address,
+        "has_ics":       bool(ics_content.strip()),
     }
 
 

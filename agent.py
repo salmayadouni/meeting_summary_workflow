@@ -18,6 +18,72 @@ from difflib import SequenceMatcher
 
 logger = logging.getLogger(__name__)
 
+
+# ── ICS helper ────────────────────────────────────────────────────────
+
+def _generate_ics(title: str, date_str: str, time_str: str, location: str) -> str:
+    """
+    Generate a minimal iCalendar (.ics) string for the given event so the
+    recipient can add it to their calendar with a single click.
+    Handles multiple date formats: YYYY-MM-DD, "May 21, 2026", "May 21st", etc.
+    """
+    import uuid as _uuid
+    import re
+    from datetime import datetime, timedelta
+
+    # Normalise ordinal suffixes: "21st" → "21", "12th" → "12"
+    date_clean = re.sub(r"(\d+)(st|nd|rd|th)", r"\1", date_str).strip()
+
+    FORMATS = [
+        ("%Y-%m-%d %H:%M", f"{date_clean} {time_str}"),
+        ("%B %d, %Y %H:%M", f"{date_clean} {time_str}"),
+        ("%b %d, %Y %H:%M", f"{date_clean} {time_str}"),
+        ("%B %d %Y %H:%M", f"{date_clean} {time_str}"),
+        ("%Y-%m-%d", date_clean),
+        ("%B %d, %Y", date_clean),
+        ("%b %d, %Y", date_clean),
+        ("%B %d %Y", date_clean),
+    ]
+
+    dt = None
+    for fmt, value in FORMATS:
+        try:
+            dt = datetime.strptime(value.strip(), fmt)
+            break
+        except ValueError:
+            continue
+
+    if dt is None:
+        return ""
+
+    dtstart = dt.strftime("%Y%m%dT%H%M%S")
+    dtend   = (dt + timedelta(hours=1)).strftime("%Y%m%dT%H%M%S")
+    uid     = str(_uuid.uuid4())
+
+    return (
+        "BEGIN:VCALENDAR\r\n"
+        "VERSION:2.0\r\n"
+        "PRODID:-//Meeting Workflow//EN\r\n"
+        "CALSCALE:GREGORIAN\r\n"
+        "METHOD:REQUEST\r\n"
+        "BEGIN:VEVENT\r\n"
+        f"DTSTART:{dtstart}\r\n"
+        f"DTEND:{dtend}\r\n"
+        f"SUMMARY:{title}\r\n"
+        f"LOCATION:{location}\r\n"
+        "DESCRIPTION:Meeting invitation from the Meeting Workflow\r\n"
+        f"UID:{uid}@meeting-workflow\r\n"
+        "STATUS:CONFIRMED\r\n"
+        "SEQUENCE:0\r\n"
+        "BEGIN:VALARM\r\n"
+        "TRIGGER:-PT15M\r\n"
+        "ACTION:DISPLAY\r\n"
+        "DESCRIPTION:Reminder\r\n"
+        "END:VALARM\r\n"
+        "END:VEVENT\r\n"
+        "END:VCALENDAR"
+    )
+
 CALENDAR_MCP = "http://localhost:8082/mcp"
 GMAIL_MCP    = "http://localhost:8083/mcp"
 
@@ -63,6 +129,12 @@ Important rules:
 - If an email is cancelled by the user, still continue with the others
 - Be concise in reasoning between tool calls
 - The summary should include: meeting title, date, attendees, decisions, action items, calendar updates
+- IMPORTANT: when calling send_email_with_confirmation, ALWAYS fill in next_meeting_title,
+  next_meeting_date (YYYY-MM-DD), next_meeting_time (HH:MM), and next_meeting_location if a
+  next meeting is mentioned in the notes. This attaches a calendar invite (.ics) to the email
+  so the recipient can add the event to their calendar with one click.
+- This applies to EVERY person — both attendees AND absent people must receive the calendar
+  invite so they can all add the next meeting to their calendar.
 """
 
 
@@ -96,8 +168,12 @@ TOOLS = [
                     "recipient_type":  {"type": "string", "enum": ["attendee", "absent"]},
                     "subject":         {"type": "string"},
                     "body":            {"type": "string", "description": "Plain text email body, max 150 words, end with 'Best regards, The Binome Team'"},
-                    "meeting_title":   {"type": "string"},
-                    "meeting_date":    {"type": "string"},
+                    "meeting_title":        {"type": "string"},
+                    "meeting_date":         {"type": "string"},
+                    "next_meeting_title":   {"type": "string", "description": "Title of the NEXT meeting to attach as calendar invite (optional)"},
+                    "next_meeting_date":    {"type": "string", "description": "Date of the next meeting in YYYY-MM-DD format (optional)"},
+                    "next_meeting_time":    {"type": "string", "description": "Time of the next meeting in HH:MM format (optional)"},
+                    "next_meeting_location":{"type": "string", "description": "Location of the next meeting (optional)"},
                 },
                 "required": ["recipient_name", "recipient_type", "subject", "body", "meeting_title", "meeting_date"],
             },
@@ -311,12 +387,44 @@ class MeetingAgent:
                 )
 
                 if choice == "Y":
+                    # Generate .ics calendar invite for the next meeting.
+                    # Try the fields the LLM passed first; fall back to memory file.
+                    ics = ""
+                    nm_title    = args.get("next_meeting_title", "").strip()
+                    nm_date     = args.get("next_meeting_date", "").strip()
+                    nm_time     = args.get("next_meeting_time", "09:00").strip() or "09:00"
+                    nm_location = args.get("next_meeting_location", "TBD").strip() or "TBD"
+
+                    # Fallback: read next_meeting from the memory file's
+                    # last created_calendar_events entry if the LLM forgot to pass it
+                    if not (nm_title and nm_date):
+                        try:
+                            memory = self._load_memory()
+                            events = memory.get("created_calendar_events", [])
+                            if events:
+                                last = events[-1]
+                                nm_title    = nm_title    or last.get("title", "")
+                                nm_date     = nm_date     or last.get("date",  "")
+                                nm_time     = nm_time     or last.get("time",  "09:00")
+                                nm_location = nm_location or last.get("location", "TBD")
+                        except Exception:
+                            pass
+
+                    if nm_title and nm_date:
+                        ics = _generate_ics(nm_title, nm_date, nm_time, nm_location)
+
                     await call_mcp(GMAIL_MCP, "send_email", {
-                        "to_address": address,
-                        "subject":    subject,
-                        "body":       current_body,
+                        "to_address":  address,
+                        "subject":     subject,
+                        "body":        current_body,
+                        "ics_content": ics,
                     })
-                    return {"status": "sent", "name": name, "to": address}
+                    return {
+                        "status":    "sent",
+                        "name":      name,
+                        "to":        address,
+                        "calendar_invite_attached": bool(ics),
+                    }
 
                 elif choice == "N" and feedback:
                     await self.emit({"type": "agent_thinking", "content": f"Revising email for {name}…"})
@@ -369,13 +477,26 @@ class MeetingAgent:
 
         # ── create_calendar_event ─────────────────────────────────────
         elif tool_name == "create_calendar_event":
-            return await call_mcp(CALENDAR_MCP, "create_calendar_event", {
+            result = await call_mcp(CALENDAR_MCP, "create_calendar_event", {
                 "title":     args["title"],
                 "date":      args["date"],
                 "time":      args["time"],
                 "location":  args["location"],
                 "attendees": json.dumps(args.get("attendees", [])),
             })
+            # Cache event details in memory so send_email can attach the ICS
+            try:
+                memory = self._load_memory()
+                memory.setdefault("created_calendar_events", []).append({
+                    "title":    args["title"],
+                    "date":     args["date"],
+                    "time":     args["time"],
+                    "location": args["location"],
+                })
+                self._save_memory(memory)
+            except Exception:
+                pass
+            return result
 
         # ── delete_calendar_event ─────────────────────────────────────
         elif tool_name == "delete_calendar_event":
